@@ -1,0 +1,177 @@
+import Image from 'next/image'
+import { HiOutlineDevicePhoneMobile } from "react-icons/hi2";
+import { CgProfile } from "react-icons/cg";
+import { RiChatNewLine } from "react-icons/ri";
+import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
+import { useClerk,UserButton } from '@clerk/nextjs';
+import { useAppContext } from '@/context/AppContext';
+import ChatLabel from './ChatLabel';
+import { useState } from 'react';
+function Sidebar({expand,setExpand}) {
+  const {openSignIn} = useClerk()
+  const {user} = useAppContext()
+  const [openMenu,setOpenMenu]=useState({id:0,open:false})
+  return (
+    <div className={`flex flex-col justify-between bg-[#212327] pt-7 transition-all z-50 max-md:absolute max-md:h-screen ${expand ? 'p-4 w-64':'md:w-20 w-0 max-md:overflow-hidden'}`}>
+        <div>
+            <div className={`flex ${expand?'flex-row gap-10':'flex-col items-center gap-8'}`}>
+            
+               
+                <Image src={expand ?  "/assests/logo_text.png": "/assests/logo.png"} width={"500"} height={"500"} alt='' className={`${expand ? 'w-36' : 'w-10'}`}/>
+                
+            <div onClick={()=>expand ? setExpand(false):setExpand(true)} className='group relative flex items-center justify-center hover:bg-gray-500/20 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer'>
+               <Image src={"/assests/menu.png"} className='md:hidden ' width={"24"} height={"24"} alt=''/>   
+                 
+                 <div  className='hidden md:block w-7' >
+                    {expand ? <LuPanelLeftClose className='text-gray-400' size={24}/> : <LuPanelLeftOpen className='text-gray-400'  size={24}/>}
+                 </div>
+            <div className={`absolute w-max ${expand ?'left-1/2 -translate-x-1/2 top-12  ':'-top-12 left-0'} opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none`}>
+                {expand ? 'Close sidebar':'Open Sidebar'}
+                <div className={`w-3 h-3 absolute bg-black rotate-45 ${expand ? 'left-1/2 -top-1.5 -translate-x-1/2':'left-4 -bottom-1.5'}`}>
+
+                </div>
+            </div>
+            </div>
+                </div>
+
+            <button className={`mt-8 flex items-center justify-center cursor-pointer ${expand ? 'bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max ':'group relative h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg'}`}>
+                <div className={expand? 'w-6':'w-7'}>
+                {expand ? <RiChatNewLine size={24} className=' text-white' /> : <RiChatNewLine size={24} className=' text-gray-400'/> }
+                
+                </div>
+                 <div className='absolute px-3 w-max -top-12 -right-12 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm py-2 rounded-lg shadow-lg pointer-events-none'>New Chat
+
+                    <div className='w-3 h-3 absolute bg-black rotate-45 left-4 -bottom-1.5'></div>
+                </div>
+                {expand && <p className='text-white text font-medium'>New chat</p>}
+                </button>
+                <div className={`mt-8 text-white/25 text-sm ${expand ? 'block ':'hidden'}`}>
+<p className='my-1'> Recents</p>
+<ChatLabel openMenu={openMenu} setOpenMenu={setOpenMenu}/>
+                </div>
+
+                
+            </div>
+
+
+            <div>
+              <div className={`flex items-center cursor-pointer group relative ${expand?'gap-1 text-white/80 text-sm p-2.5 border border-primary rounded-lg hover:bg-white/10 cursor-pointer':'h-10 w-10 mx-auto rounded-lg hover:bg-gray-500/30'}`}> 
+                <div className={expand?'w-5':'w-6.5 mx-auto'}>
+
+                {expand ? <HiOutlineDevicePhoneMobile size={22} className=' text-white' />:<HiOutlineDevicePhoneMobile size={22} className=' text-gray-400' />}
+                </div>
+                {/* <div className={`absolute -top-60 pb-8 ${expand  && '-right-40 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition'}`}>
+                <div className=' relative w-max bg-black text-white rounded-lg shadow-lg text-sm p-3
+                '>
+                  <Image width={"500"} height={"500"} src={"/assests/qrcode.png"} alt='' className='w-44'/>
+                  <p>Scan to get DeepSeek App</p>
+                  <div className={`w-3 h-3 absolute bg-black rotate-45 ${expand ? 'right-1/2':'left-4'} -bottom-1.5`}></div>
+                </div>
+
+                </div> */}<div
+  className={`absolute -top-60 pb-8 
+  ${expand ? 'left-0' : '-right-40'} 
+  opacity-0 invisible group-hover:opacity-100 group-hover:visible transition`}
+>
+  <div className="relative w-max bg-black text-white rounded-lg shadow-lg text-sm p-3">
+    <Image width={500} height={500} src="/assests/qrcode.png" alt="" className="w-44"/>
+    <p>Scan to get DeepSeek App</p>
+    <div className={`w-3 h-3 absolute bg-black rotate-45 ${expand ? 'right-1/2' : 'left-4'} -bottom-1.5`}></div>
+  </div>
+</div>
+             
+              {expand && <> <span>Get App</span> <div className='bg-primary text-white text-[10px] rounded-full  px-2'>NEW</div></>}
+              </div>
+              <div onClick={user ? null : openSignIn} className={`flex items-center ${expand ? 'hover:bg-white/10 rounded-lg':'justify-center w-full'} gap-3 text-white/60 text-sm p-2 mt-2 cursor-pointer`}>
+{user ? <UserButton/> : 
+<div><CgProfile size={24} fill=''/></div>
+
+}
+
+{expand && <span>My Profile</span>}
+              </div>
+            </div>
+        </div>
+  
+  )
+}
+
+export default Sidebar
+// import Image from 'next/image';
+// import { RiChatNewLine } from "react-icons/ri";
+// import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
+
+// function Sidebar({ expand, setExpand }) {
+//   return (
+//     <div
+//       className={`flex flex-col justify-between bg-[#212327] pt-7 transition-all z-50 max-md:absolute max-md:h-screen ${
+//         expand ? 'p-4 w-64' : 'md:w-20 w-0 max-md:overflow-hidden'
+//       }`}
+//     >
+//       <div>
+//         {/* Logo + Toggle */}
+//         <div className={`flex ${expand ? 'flex-row gap-10' : 'flex-col items-center gap-8'}`}>
+//           <Image
+//             src={expand ? "/assets/logo_text.png" : "/assets/logo.png"}
+//             width={24}
+//             height={24}
+//             alt="logo"
+//             className={expand ? 'w-36' : 'w-10'}
+//           />
+
+//           {/* Toggle Button */}
+//           <div
+//             onClick={() => setExpand(!expand)}
+//             className="group relative flex items-center justify-center hover:bg-gray-500/20 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"
+//           >
+//             <Image src="/assets/menu.png" className="md:hidden" width={24} height={24} alt="menu" />
+//             <div className="hidden md:block w-7">
+//               {expand ? <LuPanelLeftClose /> : <LuPanelLeftOpen />}
+//             </div>
+
+//             {/* Tooltip */}
+//             <div
+//               className={`absolute w-max ${
+//                 expand ? 'left-1/2 -translate-x-1/2 top-12' : '-top-12 left-0'
+//               } opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none`}
+//             >
+//               {expand ? 'Close sidebar' : 'Open Sidebar'}
+//               <div
+//                 className={`w-3 h-3 absolute bg-black rotate-45 ${
+//                   expand ? 'left-1/2 -top-1.5 -translate-x-1/2' : 'left-4 -bottom-1.5'
+//                 }`}
+//               />
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* New Chat Button */}
+//         <div className="group relative mt-8 flex justify-center">
+//           <button
+//             className={`flex items-center justify-center cursor-pointer ${
+//               expand
+//                 ? 'bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max'
+//                 : 'h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg'
+//             }`}
+//           >
+//             <div className={expand ? 'w-6' : 'w-7'}>
+//               <RiChatNewLine />
+//             </div>
+
+//             {expand && <p className="text-white font-medium">New chat</p>}
+//           </button>
+
+//           {/* Tooltip (only for collapsed) */}
+//           {!expand && (
+//             <div className="absolute px-3 w-max -top-12 right-0 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm py-2 rounded-lg shadow-lg pointer-events-none">
+//               New Chat
+//               <div className="w-3 h-3 absolute bg-black rotate-45 left-4 -bottom-1.5"></div>
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Sidebar;
