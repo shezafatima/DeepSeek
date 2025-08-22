@@ -20,7 +20,7 @@ function Sidebar({expand,setExpand}) {
                 <Image src={expand ?  "/assests/logo_text.png": "/assests/logo.png"} width={"500"} height={"500"} alt='' className={`${expand ? 'w-36' : 'w-10'}`}/>
                 
             <div onClick={()=>expand ? setExpand(false):setExpand(true)} className='group relative flex items-center justify-center hover:bg-gray-500/20 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer'>
-               <Image src={"/assests/menu.png"} className='md:hidden ' width={"24"} height={"24"} alt=''/>   
+               <LuPanelLeftClose className='md:hidden text-gray-400 ' size={24} />   
                  
                  <div  className='hidden md:block w-7' >
                     {expand ? <LuPanelLeftClose className='text-gray-400' size={24}/> : <LuPanelLeftOpen className='text-gray-400'  size={24}/>}
@@ -43,7 +43,7 @@ function Sidebar({expand,setExpand}) {
 
                     <div className='w-3 h-3 absolute bg-black rotate-45 left-4 -bottom-1.5'></div>
                 </div>
-                {expand && <p className='text-white text font-medium'>New chat</p>}
+                {expand && <p className='text-white text-sm font-medium'>New chat</p>}
                 </button>
                 <div className={`mt-8 text-white/25 text-sm ${expand ? 'block ':'hidden'}`}>
 <p className='my-1'> Recents</p>
@@ -64,15 +64,7 @@ function Sidebar({expand,setExpand}) {
 
                 {expand ? <HiOutlineDevicePhoneMobile size={24} className=' text-white' />:<HiOutlineDevicePhoneMobile size={24} className=' text-gray-400' />}
                 </div>
-                {/* <div className={`absolute -top-60 pb-8 ${expand  && '-right-40 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition'}`}>
-                <div className=' relative w-max bg-black text-white rounded-lg shadow-lg text-sm p-3
-                '>
-                  <Image width={"500"} height={"500"} src={"/assests/qrcode.png"} alt='' className='w-44'/>
-                  <p>Scan to get DeepSeek App</p>
-                  <div className={`w-3 h-3 absolute bg-black rotate-45 ${expand ? 'right-1/2':'left-4'} -bottom-1.5`}></div>
-                </div>
-
-                </div> */}<div
+               <div
   className={`absolute -top-60 pb-8 
   ${expand ? 'left-0' : '-right-40'} 
   opacity-0 invisible group-hover:opacity-100 group-hover:visible transition`}
