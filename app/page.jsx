@@ -38,8 +38,7 @@ if(containerRef.current){
 <RiMenu2Line  size={24} onClick={()=>(expand ? setExpand(false) : setExpand(true))} className=" text-gray-400"/>
   <RiChatNewLine size={24} className="opacity-70 text-gray-400"/>
        
-        {/* <Image  onClick={()=>(expand ? setExpand(false) : setExpand(true))} className="rotate-180 " src={assests.menu_icon} alt="menu-icon"/>
-         <Image className="opacity-70 " src={assests.chat_icon} alt="chat-icon"/> */}
+
       </div>
       {messages.length === 0 ? (
         <>
