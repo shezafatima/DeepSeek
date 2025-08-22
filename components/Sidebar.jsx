@@ -9,7 +9,7 @@ import ChatLabel from './ChatLabel';
 import { useState } from 'react';
 function Sidebar({expand,setExpand}) {
   const {openSignIn} = useClerk()
-  const {user} = useAppContext()
+  const {user , chats,createNewChat} = useAppContext()
   const [openMenu,setOpenMenu]=useState({id:0,open:false})
   return (
     <div className={`flex flex-col justify-between bg-[#212327] pt-7 transition-all z-50 max-md:absolute max-md:h-screen ${expand ? 'p-4 w-64':'md:w-20 w-0 max-md:overflow-hidden'}`}>
@@ -34,7 +34,7 @@ function Sidebar({expand,setExpand}) {
             </div>
                 </div>
 
-            <button className={`mt-8 flex items-center justify-center cursor-pointer ${expand ? 'bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max ':'group relative h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg'}`}>
+            <button onClick={createNewChat} className={`mt-8 flex items-center justify-center cursor-pointer ${expand ? 'bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max ':'group relative h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg'}`}>
                 <div className={expand? 'w-6':'w-7'}>
                 {expand ? <RiChatNewLine size={24} className=' text-white' /> : <RiChatNewLine size={24} className=' text-gray-400'/> }
                 
@@ -47,7 +47,11 @@ function Sidebar({expand,setExpand}) {
                 </button>
                 <div className={`mt-8 text-white/25 text-sm ${expand ? 'block ':'hidden'}`}>
 <p className='my-1'> Recents</p>
-<ChatLabel openMenu={openMenu} setOpenMenu={setOpenMenu}/>
+{
+  chats.map((chat)=>
+<ChatLabel name={chat.name} id={chat._id} openMenu={openMenu} setOpenMenu={setOpenMenu}/>
+  )
+}
                 </div>
 
                 
@@ -58,7 +62,7 @@ function Sidebar({expand,setExpand}) {
               <div className={`flex items-center cursor-pointer group relative ${expand?'gap-1 text-white/80 text-sm p-2.5 border border-primary rounded-lg hover:bg-white/10 cursor-pointer':'h-10 w-10 mx-auto rounded-lg hover:bg-gray-500/30'}`}> 
                 <div className={expand?'w-5':'w-6.5 mx-auto'}>
 
-                {expand ? <HiOutlineDevicePhoneMobile size={22} className=' text-white' />:<HiOutlineDevicePhoneMobile size={22} className=' text-gray-400' />}
+                {expand ? <HiOutlineDevicePhoneMobile size={24} className=' text-white' />:<HiOutlineDevicePhoneMobile size={24} className=' text-gray-400' />}
                 </div>
                 {/* <div className={`absolute -top-60 pb-8 ${expand  && '-right-40 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition'}`}>
                 <div className=' relative w-max bg-black text-white rounded-lg shadow-lg text-sm p-3
@@ -97,81 +101,3 @@ function Sidebar({expand,setExpand}) {
 }
 
 export default Sidebar
-// import Image from 'next/image';
-// import { RiChatNewLine } from "react-icons/ri";
-// import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
-
-// function Sidebar({ expand, setExpand }) {
-//   return (
-//     <div
-//       className={`flex flex-col justify-between bg-[#212327] pt-7 transition-all z-50 max-md:absolute max-md:h-screen ${
-//         expand ? 'p-4 w-64' : 'md:w-20 w-0 max-md:overflow-hidden'
-//       }`}
-//     >
-//       <div>
-//         {/* Logo + Toggle */}
-//         <div className={`flex ${expand ? 'flex-row gap-10' : 'flex-col items-center gap-8'}`}>
-//           <Image
-//             src={expand ? "/assets/logo_text.png" : "/assets/logo.png"}
-//             width={24}
-//             height={24}
-//             alt="logo"
-//             className={expand ? 'w-36' : 'w-10'}
-//           />
-
-//           {/* Toggle Button */}
-//           <div
-//             onClick={() => setExpand(!expand)}
-//             className="group relative flex items-center justify-center hover:bg-gray-500/20 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"
-//           >
-//             <Image src="/assets/menu.png" className="md:hidden" width={24} height={24} alt="menu" />
-//             <div className="hidden md:block w-7">
-//               {expand ? <LuPanelLeftClose /> : <LuPanelLeftOpen />}
-//             </div>
-
-//             {/* Tooltip */}
-//             <div
-//               className={`absolute w-max ${
-//                 expand ? 'left-1/2 -translate-x-1/2 top-12' : '-top-12 left-0'
-//               } opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none`}
-//             >
-//               {expand ? 'Close sidebar' : 'Open Sidebar'}
-//               <div
-//                 className={`w-3 h-3 absolute bg-black rotate-45 ${
-//                   expand ? 'left-1/2 -top-1.5 -translate-x-1/2' : 'left-4 -bottom-1.5'
-//                 }`}
-//               />
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* New Chat Button */}
-//         <div className="group relative mt-8 flex justify-center">
-//           <button
-//             className={`flex items-center justify-center cursor-pointer ${
-//               expand
-//                 ? 'bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max'
-//                 : 'h-9 w-9 mx-auto hover:bg-gray-500/30 rounded-lg'
-//             }`}
-//           >
-//             <div className={expand ? 'w-6' : 'w-7'}>
-//               <RiChatNewLine />
-//             </div>
-
-//             {expand && <p className="text-white font-medium">New chat</p>}
-//           </button>
-
-//           {/* Tooltip (only for collapsed) */}
-//           {!expand && (
-//             <div className="absolute px-3 w-max -top-12 right-0 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm py-2 rounded-lg shadow-lg pointer-events-none">
-//               New Chat
-//               <div className="w-3 h-3 absolute bg-black rotate-45 left-4 -bottom-1.5"></div>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Sidebar;

@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { IoCopyOutline } from "react-icons/io5";
 import { PiPencilSimpleLineLight } from "react-icons/pi";
 import { LuRefreshCw } from "react-icons/lu";
 import { AiOutlineLike ,AiOutlineDislike} from "react-icons/ai";
 import Image from 'next/image';
-
+import Markdown from 'react-markdown';
+import Prism from 'prismjs'
+import toast from 'react-hot-toast';
 function Message({role,content}) {
+  useEffect(()=>{
+Prism.highlightAll()
+  },[content])
+  const copyMessage = ()=>{
+    navigator.clipboard.writeText(content)
+    toast.success("Message copied to clipboard!")
+  }
   return (
     <div className='flex flex-col items-center w-full max-w-3xl text-sm'>
         <div className={`flex flex-col w-full mb-8 ${role === 'user' && 'items-end' }`}>
@@ -15,13 +24,13 @@ function Message({role,content}) {
                   {
                     role === 'user' ? (
 <>
-<IoCopyOutline className='w-4 cursor-pointer'/>
+<IoCopyOutline onClick={copyMessage} className='w-4 cursor-pointer'/>
 <PiPencilSimpleLineLight  className='w-4.5 cursor-pointer'/>
 
 </>
                     ):(
 <>
-<IoCopyOutline className='w-4 cursor-pointer'/>
+<IoCopyOutline onClick={copyMessage} className='w-4 cursor-pointer'/>
 <LuRefreshCw className='w-4 cursor-pointer'/>
 <AiOutlineLike className='w-4 cursor-pointer'/>
 <AiOutlineDislike className='w-4 cursor-pointer'/>
@@ -39,7 +48,10 @@ function Message({role,content}) {
     <>
 <Image src={"/assests/logo.png"} alt='' width={"500"} height={"500"} className='h-9 w-9 p-1 border border-white/15 rounded-full'/>
    <div className='space-y-4 w-full overflow-scroll'>
+   <Markdown>
     {content}
+
+   </Markdown>
    </div>
     </>
   
