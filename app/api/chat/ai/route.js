@@ -34,7 +34,7 @@ export async function POST(req) {
 
     const completion = await openai.chat.completions.create({
       messages: [{ role: "user", content: prompt }],
-      model: "gemini-1.5-flash",
+      model: "gemini-2.5-flash",
     });
 
     const message = completion.choices[0].message;
